@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -38,7 +37,7 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--light-bg-color);
             transition: background-color 0.3s ease;
-            letter-spacing: -0.01em; /* Subtle letter spacing adjustment */
+            letter-spacing: -0.01em;
         }
 
         body.dark-mode {
@@ -49,78 +48,26 @@
             background-color: var(--light-container-bg);
             color: var(--light-text-color);
             transition: background-color 0.3s ease, color 0.3s ease;
-            box-shadow: 0 10px 15px -3px var(--light-shadow-color), 0 4px 6px -2px var(--light-shadow-color); /* Softer shadow */
+            box-shadow: 0 10px 15px -3px var(--light-shadow-color), 0 4px 6px -2px var(--light-shadow-color);
         }
         
         body.dark-mode .container {
             background-color: var(--dark-container-bg);
             color: var(--dark-text-color);
-            box-shadow: 0 10px 15px -3px var(--dark-shadow-color), 0 4px 6px -2px var(--dark-shadow-color);
         }
 
         .bg-gray-100 {
             background-color: var(--light-card-bg);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Card shadow */
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
         
         body.dark-mode .bg-gray-100 {
             background-color: var(--dark-card-bg);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.12);
         }
 
-        .bg-gray-100:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        body.dark-mode .bg-gray-100:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
-        }
-
-        .text-gray-800 {
-            color: var(--light-text-color);
-        }
-        
-        body.dark-mode .text-gray-800 {
-            color: var(--dark-text-color);
-        }
-
-        .text-gray-600 {
-            color: var(--light-secondary-text);
-        }
-        
-        body.dark-mode .text-gray-600 {
-            color: var(--dark-secondary-text);
-        }
-
-        .text-gray-700 {
-            color: var(--light-secondary-text);
-        }
-
-        body.dark-mode .text-gray-700 {
-            color: var(--dark-text-color);
-        }
-
-        .border-gray-300 {
-            border-color: var(--light-input-border);
-        }
-        
-        body.dark-mode .border-gray-300 {
-            border-color: var(--dark-input-border);
-        }
-
-        .form-radio {
-            color: #63b3ed;
-        }
-
-        /* Custom styles for improvements */
         .select-error {
             border-color: var(--light-error-color) !important;
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.5) !important; /* Tailwind red-500 with opacity */
-        }
-        body.dark-mode .select-error {
-            border-color: var(--dark-error-color) !important;
-            box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.5) !important; /* Tailwind red-400 with opacity */
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.5) !important;
         }
 
         .question-card-enter {
@@ -133,7 +80,6 @@
             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
         }
 
-        /* Skeleton Loader */
         .skeleton-loader {
             background: linear-gradient(90deg, var(--light-card-bg) 25%, #e0e0e0 50%, var(--light-card-bg) 75%);
             background-size: 200% 100%;
@@ -149,31 +95,19 @@
             100% { background-position: -200% 0; }
         }
 
-        .skeleton-text {
-            height: 1em;
-            margin-bottom: 0.5em;
-        }
-        .skeleton-text-lg {
-            height: 1.5em;
-            width: 80%;
-        }
-        .skeleton-text-sm {
-            height: 1em;
-            width: 60%;
-        }
+        .skeleton-text { height: 1em; margin-bottom: 0.5em; }
+        .skeleton-text-lg { height: 1.5em; width: 80%; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8 relative">
 
     <div class="container rounded-2xl shadow-xl w-full max-w-xl md:max-w-3xl p-6 sm:p-8 md:p-12 flex flex-col items-center">
-        <!-- Título e descrição -->
         <h1 class="text-3xl sm:text-4xl font-bold text-center mb-2 tracking-wide">si vis pacem para bellum</h1>
         <p class="text-center text-sm sm:text-base mb-8 md:mb-12 text-gray-600 leading-relaxed">Selecione uma disciplina e o número de questões para gerar seu simulado de Certo/Errado.</p>
         
-        <!-- Contêiner de seleção e botão -->
         <div class="w-full mb-8 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
             <div class="relative w-full md:w-1/2">
-                <select id="subject-select" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition-all duration-200 ease-in-out" aria-label="Escolha uma disciplina">
+                <select id="subject-select" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition-all duration-200 ease-in-out">
                     <option value="" disabled selected>Escolha uma disciplina</option>
                     <option value="Direito Constitucional">Direito Constitucional</option>
                     <option value="Direitos Humanos">Direitos Humanos</option>
@@ -181,56 +115,44 @@
                     <option value="Direito Penal">Direito Penal</option>
                     <option value="Direito Processual Penal">Direito Processual Penal</option>
                 </select>
-                <button id="clear-subject-btn" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none" aria-label="Limpar seleção de disciplina" title="Limpar seleção">
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <button id="clear-subject-btn" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
                 <p id="subject-error" class="absolute -bottom-6 left-0 text-red-500 text-xs hidden">Por favor, selecione uma disciplina.</p>
             </div>
             <div class="w-full md:w-1/4">
-                <input type="number" id="num-questions" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200" value="5" min="1" max="10" aria-label="Número de questões" title="Número de questões (1-10)">
+                <input type="number" id="num-questions" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200" value="5" min="1" max="10">
             </div>
-            <button id="generate-btn" class="w-full md:w-auto px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 transform hover:scale-105" aria-label="Gerar Questões">
+            <button id="generate-btn" class="w-full md:w-auto px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors transform hover:scale-105">
                 Gerar Questões
             </button>
         </div>
 
-        <!-- Mensagens de carregamento e erro -->
-        <div id="loading" class="hidden text-center text-gray-500 dark:text-gray-400 mb-6">
+        <div id="loading" class="hidden text-center text-gray-500 mb-6">
             <div class="animate-spin rounded-full h-8 w-8 border-4 border-t-indigo-500 border-gray-200 mx-auto mb-2"></div>
             <span>Gerando questões...</span>
         </div>
-        <div id="success-message" class="hidden text-center text-green-600 dark:text-green-400 font-medium mb-6"></div>
-        <div id="error-message" class="hidden text-center text-red-500 dark:text-red-400 font-medium mb-6"></div>
+        <div id="success-message" class="hidden text-center text-green-600 font-medium mb-6"></div>
+        <div id="error-message" class="hidden text-center text-red-500 font-medium mb-6"></div>
 
-        <!-- Contêiner das questões -->
         <div id="questions-container" class="w-full space-y-6"></div>
 
-        <!-- Botão para abrir o Dashboard -->
-        <button id="open-dashboard-btn" class="w-full mt-8 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 transform hover:scale-105" aria-label="Abrir Dashboard de Desempenho">
+        <button id="open-dashboard-btn" class="w-full mt-8 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors transform hover:scale-105">
             Ver Desempenho
         </button>
     </div>
 
-    <!-- Overlay e Modal do Dashboard -->
+    <!-- Dashboard Modal -->
     <div id="dashboard-overlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-11/12 max-w-2xl relative">
             <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Dashboard de Desempenho</h2>
-            
             <div id="dashboard-content" class="space-y-4 text-gray-700 dark:text-gray-300">
-                <!-- Conteúdo do dashboard será injetado aqui -->
-                <p id="overall-accuracy" class="text-lg font-semibold"></p>
-                <div id="subject-performance" class="space-y-2">
-                    <!-- Desempenho por matéria será injetado aqui -->
-                </div>
+                <div id="overall-accuracy" class="text-lg font-semibold"></div>
+                <div id="subject-performance" class="space-y-2"></div>
             </div>
-
             <div class="mt-6 flex justify-end space-x-4">
-                <button id="reset-dashboard-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                    Resetar Dados
-                </button>
-                <button id="close-dashboard-btn" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors dark:bg-gray-700 dark:text-gray-200">
-                    Fechar
-                </button>
+                <button id="reset-dashboard-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Resetar Dados</button>
+                <button id="close-dashboard-btn" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400">Fechar</button>
             </div>
         </div>
     </div>
@@ -245,40 +167,24 @@
             const errorMessage = document.getElementById('error-message');
             const successMessage = document.getElementById('success-message');
             const subjectError = document.getElementById('subject-error');
-            // const themeToggle = document.getElementById('theme-toggle'); // Removido
             const clearSubjectBtn = document.getElementById('clear-subject-btn');
-
-            // Novas constantes para os elementos do dashboard
             const openDashboardBtn = document.getElementById('open-dashboard-btn');
             const dashboardOverlay = document.getElementById('dashboard-overlay');
             const closeDashboardBtn = document.getElementById('close-dashboard-btn');
             const resetDashboardBtn = document.getElementById('reset-dashboard-btn');
-            const dashboardContent = document.getElementById('dashboard-content');
             const overallAccuracyDisplay = document.getElementById('overall-accuracy');
             const subjectPerformanceDisplay = document.getElementById('subject-performance');
 
-            const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=AIzaSyBkPMKVAI_Jh-ZJ6h4AEUuP9W990ItqLxk";
+            const apiKey = ""; // A chave será providenciada pelo ambiente
+            const modelName = "gemini-2.5-flash-preview-09-2025";
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
-            // Dark Mode Toggle Functionality (Removido)
-            // themeToggle.addEventListener('click', () => {
-            //     document.body.classList.toggle('dark-mode');
-            //     localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-            // });
+            let performanceData = JSON.parse(localStorage.getItem('quizPerformance')) || {};
 
-            // Apply saved theme on load (Mantido para compatibilidade, mas pode ser removido se o dark mode não for mais desejado)
-            if (localStorage.getItem('theme') === 'dark') {
-                document.body.classList.add('dark-mode');
+            function savePerformanceData() {
+                localStorage.setItem('quizPerformance', JSON.stringify(performanceData));
             }
 
-            // Clear Subject Selection
-            clearSubjectBtn.addEventListener('click', () => {
-                subjectSelect.value = "";
-                subjectSelect.classList.remove('select-error');
-                subjectError.classList.add('hidden');
-                errorMessage.classList.add('hidden');
-            });
-
-            // Function to display skeleton loaders
             function showSkeletonLoaders(count) {
                 questionsContainer.innerHTML = '';
                 for (let i = 0; i < count; i++) {
@@ -288,43 +194,51 @@
                         <div class="skeleton-loader skeleton-text-lg w-3/4 mb-4"></div>
                         <div class="skeleton-loader skeleton-text w-full mb-2"></div>
                         <div class="skeleton-loader skeleton-text w-1/2 mb-4"></div>
-                        <div class="skeleton-loader skeleton-text-sm w-1/3"></div>
                     `;
                     questionsContainer.appendChild(skeletonCard);
                 }
             }
 
-            // Function to generate questions with the Gemini API
+            async function callGeminiAPI(payload, retries = 5, delay = 1000) {
+                for (let i = 0; i < retries; i++) {
+                    try {
+                        const response = await fetch(API_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!response.ok) throw new Error(`Status: ${response.status}`);
+                        return await response.json();
+                    } catch (error) {
+                        if (i === retries - 1) throw error;
+                        await new Promise(res => setTimeout(res, delay));
+                        delay *= 2;
+                    }
+                }
+            }
+
             async function generateQuestions() {
                 const subject = subjectSelect.value;
                 const numQuestions = parseInt(numQuestionsInput.value, 10);
 
-                // Clear previous messages and styles
-                questionsContainer.innerHTML = '';
-                errorMessage.classList.add('hidden');
-                successMessage.classList.add('hidden');
-                subjectSelect.classList.remove('select-error');
-                subjectError.classList.add('hidden');
-
                 if (!subject) {
                     subjectSelect.classList.add('select-error');
                     subjectError.classList.remove('hidden');
-                    showError("Por favor, selecione uma disciplina.");
-                    return;
-                }
-                if (isNaN(numQuestions) || numQuestions < 1 || numQuestions > 10) {
-                    showError("Por favor, insira um número de questões entre 1 e 10.");
                     return;
                 }
 
+                errorMessage.classList.add('hidden');
+                successMessage.classList.add('hidden');
                 loadingIndicator.classList.remove('hidden');
                 generateBtn.disabled = true;
-                showSkeletonLoaders(numQuestions); // Show skeleton loaders
+                showSkeletonLoaders(numQuestions);
 
-                const userPrompt = `Gere ${numQuestions} questões de 'Certo/Errado' sobre ${subject} para um concurso público. Para cada questão, inclua a resposta e uma breve explicação da resolução.`;
-                
+                const systemPrompt = "És um professor especialista em concursos públicos. Gera questões objetivas de Certo/Errado com explicações detalhadas.";
+                const userPrompt = `Gera ${numQuestions} questões de 'Certo/Errado' sobre ${subject} para um concurso público de alto nível. Retorna um array de objetos JSON.`;
+
                 const payload = {
                     contents: [{ parts: [{ text: userPrompt }] }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] },
                     generationConfig: {
                         responseMimeType: "application/json",
                         responseSchema: {
@@ -336,305 +250,147 @@
                                     "answer": { "type": "BOOLEAN" },
                                     "resolution": { "type": "STRING" }
                                 },
-                                "propertyOrdering": ["question", "answer", "resolution"]
+                                required: ["question", "answer", "resolution"]
                             }
                         }
                     }
                 };
 
                 try {
-                    const response = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(`API Error: ${response.status} - ${errorData.error.message}`);
-                    }
-
-                    const result = await response.json();
-                    const jsonString = result.candidates[0].content.parts[0].text;
-                    const questions = JSON.parse(jsonString);
-
-                    questionsContainer.innerHTML = ''; // Clear skeletons
+                    const result = await callGeminiAPI(payload);
+                    const questions = JSON.parse(result.candidates[0].content.parts[0].text);
+                    questionsContainer.innerHTML = '';
                     displayQuestions(questions);
-                    showSuccess(`Geradas ${questions.length} questões de ${subject}!`);
-
+                    showSuccess(`Geradas ${questions.length} questões!`);
                 } catch (error) {
-                    console.error("Failed to generate questions:", error);
-                    showError("Falha ao gerar questões. Tente novamente mais tarde.");
+                    console.error(error);
+                    showError("Falha ao gerar questões. Verifique a sua ligação ou tente mais tarde.");
+                    questionsContainer.innerHTML = '';
                 } finally {
                     loadingIndicator.classList.add('hidden');
                     generateBtn.disabled = false;
                 }
             }
 
-            // Function to display questions on the page
             function displayQuestions(questions) {
                 questions.forEach((q, index) => {
-                    const questionCard = document.createElement('div');
-                    questionCard.className = 'bg-gray-100 dark:bg-gray-800 p-6 rounded-xl shadow-md question-card-enter';
-                    questionCard.innerHTML = `
-                        <p class="font-medium text-lg mb-4 text-gray-800 dark:text-gray-100 leading-relaxed">${index + 1}. ${q.question}</p>
-                        <div class="flex flex-col space-y-2">
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input type="radio" class="form-radio h-5 w-5 text-indigo-600 dark:text-indigo-400" name="q-${index}" value="true" data-correct-answer="${q.answer}">
-                                <span class="ml-2 text-gray-700 dark:text-gray-300">Certo</span>
+                    const card = document.createElement('div');
+                    card.className = 'bg-gray-100 dark:bg-gray-800 p-6 rounded-xl shadow-md question-card-enter';
+                    card.dataset.answer = q.answer;
+                    card.innerHTML = `
+                        <p class="font-medium text-lg mb-4 text-gray-800 dark:text-gray-100">${index + 1}. ${q.question}</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition">
+                                <input type="radio" class="w-5 h-5 text-indigo-600" name="q-${index}" value="true">
+                                <span class="ml-3 dark:text-gray-300">Certo</span>
                             </label>
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input type="radio" class="form-radio h-5 w-5 text-indigo-600 dark:text-indigo-400" name="q-${index}" value="false" data-correct-answer="${q.answer}">
-                                <span class="ml-2 text-gray-700 dark:text-gray-300">Errado</span>
+                            <label class="flex items-center cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition">
+                                <input type="radio" class="w-5 h-5 text-indigo-600" name="q-${index}" value="false">
+                                <span class="ml-3 dark:text-gray-300">Errado</span>
                             </label>
                         </div>
-                        <div class="mt-4 hidden font-medium text-sm result-message flex items-center space-x-2"></div>
-                        <div class="mt-4 hidden text-sm p-4 rounded-lg bg-white dark:bg-gray-700 resolution-comment">
-                            <p class="font-bold text-gray-800 dark:text-gray-100">Resolução:</p>
-                            <p class="text-gray-700 dark:text-gray-200 mt-1 leading-relaxed">${q.resolution}</p>
-                            <button class="toggle-resolution-btn mt-2 text-indigo-600 dark:text-indigo-400 hover:underline text-xs focus:outline-none">Ocultar Resolução</button>
+                        <div class="mt-4 hidden result-msg font-bold"></div>
+                        <div class="mt-4 hidden resolution-box p-4 bg-white dark:bg-gray-700 rounded border-l-4 border-indigo-500">
+                            <p class="text-sm font-bold mb-1">Resolução:</p>
+                            <p class="text-sm text-gray-700 dark:text-gray-200">${q.resolution}</p>
                         </div>
-                        <button class="toggle-resolution-btn mt-4 text-indigo-600 dark:text-indigo-400 hover:underline text-sm hidden focus:outline-none">Mostrar Resolução</button>
                     `;
-                    questionsContainer.appendChild(questionCard);
-                    // Trigger animation
-                    setTimeout(() => {
-                        questionCard.classList.remove('question-card-enter');
-                        questionCard.classList.add('question-card-enter-active');
-                    }, 50 * index); // Stagger animation
+                    questionsContainer.appendChild(card);
+                    setTimeout(() => card.classList.add('question-card-enter-active'), 50 * index);
                 });
 
-                // Add a button to check answers
-                const checkBtn = document.createElement('button');
-                checkBtn.id = 'check-btn';
-                checkBtn.className = 'w-full mt-6 px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 transform hover:scale-105';
-                checkBtn.textContent = 'Verificar Respostas';
-                questionsContainer.appendChild(checkBtn);
-
-                checkBtn.addEventListener('click', checkAnswers);
+                const btn = document.createElement('button');
+                btn.className = 'w-full mt-6 px-6 py-4 bg-green-600 text-white font-bold rounded-lg shadow-lg hover:bg-green-700 transition transform hover:scale-105';
+                btn.textContent = 'Finalizar Simulado';
+                btn.onclick = () => checkAnswers(questions);
+                questionsContainer.appendChild(btn);
             }
 
-            // Função para inicializar o histórico do dashboard
-            let performanceData = JSON.parse(localStorage.getItem('quizPerformance')) || {};
-
-            // Função para salvar os dados no localStorage
-            function savePerformanceData() {
-                localStorage.setItem('quizPerformance', JSON.stringify(performanceData));
-            }
-
-            // Função para atualizar o desempenho após cada verificação de respostas
-            function updatePerformance(subject, questions) {
-                if (!performanceData[subject]) {
-                    performanceData[subject] = { total: 0, correct: 0 };
-                }
-
-                let currentCorrect = 0;
-                questions.forEach(q => {
-                    const radios = q.querySelectorAll('input[type="radio"]');
-                    radios.forEach(radio => {
-                        if (radio.checked) {
-                            const isCorrect = radio.value === radio.dataset.correctAnswer;
-                            if (isCorrect) {
-                                currentCorrect++;
-                            }
-                        }
-                    });
-                });
-
-                performanceData[subject].total += questions.length;
-                performanceData[subject].correct += currentCorrect;
-                savePerformanceData();
-            }
-
-            // Função original para verificar respostas
-            const originalCheckAnswers = function() {
-                const questions = questionsContainer.querySelectorAll('.bg-gray-100');
-                let allAnswered = true;
+            function checkAnswers(originalQuestions) {
+                const cards = questionsContainer.querySelectorAll('.bg-gray-100');
                 let correctCount = 0;
+                let answeredAll = true;
 
-                questions.forEach(q => {
-                    const radios = q.querySelectorAll('input[type="radio"]');
-                    let isAnswered = false;
-                    const resultMessage = q.querySelector('.result-message');
-                    const resolutionComment = q.querySelector('.resolution-comment');
-                    const toggleResolutionBtn = q.querySelector('.toggle-resolution-btn');
+                cards.forEach((card, i) => {
+                    const selected = card.querySelector('input:checked');
+                    if (!selected) { answeredAll = false; return; }
 
-                    radios.forEach(radio => {
-                        if (radio.checked) {
-                            isAnswered = true;
-                            const isCorrect = radio.value === radio.dataset.correctAnswer;
-                            
-                            resultMessage.classList.remove('hidden');
-                            
-                            if (isCorrect) {
-                                correctCount++;
-                                resultMessage.innerHTML = `<svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span>Resposta correta!</span>`;
-                                resultMessage.classList.remove('text-red-500');
-                                resultMessage.classList.add('text-green-600');
-                                resolutionComment.classList.add('hidden'); // Hide resolution for correct answers by default
-                                toggleResolutionBtn.textContent = 'Mostrar Resolução';
-                                toggleResolutionBtn.classList.remove('hidden');
-                            } else {
-                                resultMessage.innerHTML = `<svg class="h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span>Resposta incorreta.</span>`;
-                                resultMessage.classList.remove('text-green-600');
-                                resultMessage.classList.add('text-red-500');
-                                resolutionComment.classList.remove('hidden'); // Show resolution if answer is incorrect
-                                toggleResolutionBtn.textContent = 'Ocultar Resolução';
-                                toggleResolutionBtn.classList.remove('hidden');
-                            }
-                        }
-                    });
-                    if (!isAnswered) {
-                        allAnswered = false;
-                    }
+                    const isCorrect = selected.value === card.dataset.answer;
+                    const msg = card.querySelector('.result-msg');
+                    const res = card.querySelector('.resolution-box');
 
-                    // Add event listener for toggle resolution button (ensure only one listener per button)
-                    if (!toggleResolutionBtn.dataset.listenerAdded) {
-                        toggleResolutionBtn.addEventListener('click', () => {
-                            resolutionComment.classList.toggle('hidden');
-                            if (resolutionComment.classList.contains('hidden')) {
-                                toggleResolutionBtn.textContent = 'Mostrar Resolução';
-                            } else {
-                                toggleResolutionBtn.textContent = 'Ocultar Resolução';
-                            }
-                        });
-                        toggleResolutionBtn.dataset.listenerAdded = true;
+                    msg.classList.remove('hidden');
+                    res.classList.remove('hidden');
+                    
+                    if (isCorrect) {
+                        correctCount++;
+                        msg.textContent = "✓ Correto!";
+                        msg.className = "mt-4 result-msg font-bold text-green-600";
+                    } else {
+                        msg.textContent = "✗ Incorreto";
+                        msg.className = "mt-4 result-msg font-bold text-red-500";
                     }
                 });
 
-                if (!allAnswered) {
-                    showError("Por favor, responda a todas as questões antes de verificar.");
+                if (!answeredAll) {
+                    showError("Responda a todas as questões antes de finalizar.");
                     return;
                 }
-                
-                // Hide check button and show "next" button
-                document.getElementById('check-btn').classList.add('hidden');
-                
-                const nextBtn = document.createElement('button');
-                nextBtn.id = 'next-btn';
-                nextBtn.className = 'w-full mt-6 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 transform hover:scale-105';
-                nextBtn.textContent = 'Gerar Novas Questões';
-                questionsContainer.appendChild(nextBtn);
 
-                nextBtn.addEventListener('click', () => {
-                    generateQuestions();
-                    questionsContainer.removeChild(nextBtn);
-                });
-
-                // Update overall error message to show score
-                errorMessage.classList.remove('hidden');
-                if (correctCount === questions.length) {
-                    errorMessage.textContent = `Parabéns! Você acertou todas as ${questions.length} questões!`;
-                    errorMessage.classList.remove('text-red-500');
-                    errorMessage.classList.add('text-green-600');
-                } else {
-                    errorMessage.textContent = `Você acertou ${correctCount} de ${questions.length} questões. Continue praticando!`;
-                    errorMessage.classList.remove('text-green-600');
-                    errorMessage.classList.add('text-red-500');
-                }
-            };
-
-            // Modificar a função checkAnswers para chamar updatePerformance
-            // A função checkAnswers agora é uma wrapper que chama a original e depois atualiza o dashboard
-            window.checkAnswers = function() { // Torna global para ser acessível pelo addEventListener
-                originalCheckAnswers(); // Chama a função original para verificar e exibir resultados
-
+                // Update Performance
                 const subject = subjectSelect.value;
-                const questions = questionsContainer.querySelectorAll('.bg-gray-100');
-                updatePerformance(subject, Array.from(questions)); // Converte NodeList para Array
-                renderDashboard(); // Atualiza o dashboard imediatamente
-            };
+                if (!performanceData[subject]) performanceData[subject] = { total: 0, correct: 0 };
+                performanceData[subject].total += originalQuestions.length;
+                performanceData[subject].correct += correctCount;
+                savePerformanceData();
 
+                showSuccess(`Simulado concluído! Acertou ${correctCount} de ${originalQuestions.length}.`);
+                renderDashboard();
+                
+                // Switch button to "New Quiz"
+                const btn = questionsContainer.querySelector('button');
+                btn.textContent = "Gerar Novo Simulado";
+                btn.className = 'w-full mt-6 px-6 py-4 bg-indigo-600 text-white font-bold rounded-lg shadow-lg hover:bg-indigo-700 transition transform hover:scale-105';
+                btn.onclick = () => generateQuestions();
+            }
 
-            // Função para renderizar o dashboard
             function renderDashboard() {
-                let totalQuestionsOverall = 0;
-                let correctQuestionsOverall = 0;
-                subjectPerformanceDisplay.innerHTML = ''; // Limpa o conteúdo anterior
+                subjectPerformanceDisplay.innerHTML = '';
+                let tQ = 0, tC = 0;
 
-                for (const subject in performanceData) {
-                    const data = performanceData[subject];
-                    const accuracy = data.total > 0 ? ((data.correct / data.total) * 100).toFixed(2) : 0;
-                    totalQuestionsOverall += data.total;
-                    correctQuestionsOverall += data.correct;
+                for (const subj in performanceData) {
+                    const d = performanceData[subj];
+                    const acc = ((d.correct / d.total) * 100).toFixed(1);
+                    tQ += d.total; tC += d.correct;
 
-                    const subjectDiv = document.createElement('div');
-                    subjectDiv.className = 'p-3 bg-gray-50 dark:bg-gray-700 rounded-md';
-                    subjectDiv.innerHTML = `
-                        <p class="font-medium">${subject}:</p>
-                        <p>Questões Respondidas: ${data.total}</p>
-                        <p>Acertos: ${data.correct}</p>
-                        <p>Taxa de Acerto: ${accuracy}%</p>
-                    `;
-                    subjectPerformanceDisplay.appendChild(subjectDiv);
+                    const div = document.createElement('div');
+                    div.className = 'p-3 bg-gray-100 dark:bg-gray-700 rounded-lg flex justify-between items-center';
+                    div.innerHTML = `<div><span class="font-bold">${subj}</span><br><small>${d.correct}/${d.total} acertos</small></div><span class="text-indigo-500 font-bold">${acc}%</span>`;
+                    subjectPerformanceDisplay.appendChild(div);
                 }
 
-                const overallAccuracy = totalQuestionsOverall > 0 ? ((correctQuestionsOverall / totalQuestionsOverall) * 100).toFixed(2) : 0;
-                overallAccuracyDisplay.innerHTML = `
-                    <p>Total de Questões Respondidas: ${totalQuestionsOverall}</p>
-                    <p>Total de Acertos: ${correctQuestionsOverall}</p>
-                    <p><strong>Taxa de Acerto Geral: ${overallAccuracy}%</strong></p>
-                `;
+                const totalAcc = tQ > 0 ? ((tC / tQ) * 100).toFixed(1) : 0;
+                overallAccuracyDisplay.innerHTML = `Média Geral: <span class="text-indigo-600">${totalAcc}%</span> (${tC}/${tQ})`;
             }
 
-            // Event Listeners para o Dashboard
-            openDashboardBtn.addEventListener('click', () => {
-                renderDashboard(); // Renderiza o dashboard antes de abrir
-                dashboardOverlay.classList.remove('hidden');
-            });
-
-            closeDashboardBtn.addEventListener('click', () => {
-                dashboardOverlay.classList.add('hidden');
-            });
-
-            resetDashboardBtn.addEventListener('click', () => {
-                if (confirm('Tem certeza que deseja resetar todos os dados de desempenho? Esta ação é irreversível.')) {
-                    performanceData = {}; // Limpa os dados
-                    savePerformanceData(); // Salva o estado vazio
-                    renderDashboard(); // Renderiza o dashboard vazio
-                    alert('Dados de desempenho resetados com sucesso!');
-                }
-            });
-
-            // Opcional: Fechar o dashboard clicando fora do modal
-            dashboardOverlay.addEventListener('click', (e) => {
-                if (e.target === dashboardOverlay) {
-                    dashboardOverlay.classList.add('hidden');
-                }
-            });
-
-            // Renderiza o dashboard na carga inicial (se houver dados salvos)
-            renderDashboard();
-
-            // Function to display a temporary error message
-            function showError(message) {
-                errorMessage.textContent = message;
+            function showError(m) {
+                errorMessage.textContent = m;
                 errorMessage.classList.remove('hidden');
-                successMessage.classList.add('hidden'); // Hide success message if error occurs
             }
 
-            // Function to display a temporary success message
-            function showSuccess(message) {
-                successMessage.textContent = message;
+            function showSuccess(m) {
+                successMessage.textContent = m;
                 successMessage.classList.remove('hidden');
-                errorMessage.classList.add('hidden'); // Hide error message if success occurs
-                setTimeout(() => {
-                    successMessage.classList.add('hidden');
-                }, 3000); // Hide after 3 seconds
+                setTimeout(() => successMessage.classList.add('hidden'), 4000);
             }
-            
-            // Event listener for the main button
-            generateBtn.addEventListener('click', () => {
-                generateQuestions();
-                generateBtn.textContent = 'Gerar Novas Questões'; // Change button text after first click
-            });
 
-            // Clear error message when subject selection changes
-            subjectSelect.addEventListener('change', () => {
-                subjectSelect.classList.remove('select-error');
-                subjectError.classList.add('hidden');
-                errorMessage.classList.add('hidden'); // Also hide general error message
-            });
+            generateBtn.addEventListener('click', generateQuestions);
+            clearSubjectBtn.addEventListener('click', () => { subjectSelect.value = ""; errorMessage.classList.add('hidden'); });
+            openDashboardBtn.addEventListener('click', () => { renderDashboard(); dashboardOverlay.classList.remove('hidden'); });
+            closeDashboardBtn.addEventListener('click', () => dashboardOverlay.classList.add('hidden'));
+            resetDashboardBtn.addEventListener('click', () => { if(confirm("Apagar histórico?")) { performanceData = {}; savePerformanceData(); renderDashboard(); }});
+            
+            renderDashboard();
         });
     </script>
 </body>
