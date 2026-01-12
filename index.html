@@ -103,7 +103,7 @@
 
     <div class="container rounded-2xl shadow-xl w-full max-w-xl md:max-w-3xl p-6 sm:p-8 md:p-12 flex flex-col items-center">
         <h1 class="text-3xl sm:text-4xl font-bold text-center mb-2 tracking-wide">si vis pacem para bellum</h1>
-        <p class="text-center text-sm sm:text-base mb-8 md:mb-12 text-gray-600 leading-relaxed">Selecione uma disciplina e o número de questões para gerar seu simulado de Certo/Errado.</p>
+        <p class="text-center text-sm sm:text-base mb-8 md:mb-12 text-gray-600 leading-relaxed">Gere questões de Certo/Errado instantaneamente.</p>
         
         <div class="w-full mb-8 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
             <div class="relative w-full md:w-1/2">
@@ -115,10 +115,7 @@
                     <option value="Direito Penal">Direito Penal</option>
                     <option value="Direito Processual Penal">Direito Processual Penal</option>
                 </select>
-                <button id="clear-subject-btn" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-                <p id="subject-error" class="absolute -bottom-6 left-0 text-red-500 text-xs hidden">Por favor, selecione uma disciplina.</p>
+                <p id="subject-error" class="absolute -bottom-6 left-0 text-red-500 text-xs hidden">Selecione uma disciplina.</p>
             </div>
             <div class="w-full md:w-1/4">
                 <input type="number" id="num-questions" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200" value="5" min="1" max="10">
@@ -130,10 +127,10 @@
 
         <div id="loading" class="hidden text-center text-gray-500 mb-6">
             <div class="animate-spin rounded-full h-8 w-8 border-4 border-t-indigo-500 border-gray-200 mx-auto mb-2"></div>
-            <span>A ligar ao servidor...</span>
+            <span>Conectando ao Gemini...</span>
         </div>
-        <div id="success-message" class="hidden text-center text-green-600 font-medium mb-6"></div>
-        <div id="error-message" class="hidden text-center text-red-500 font-medium mb-6"></div>
+        
+        <div id="status-box" class="w-full mb-6 hidden text-center font-medium"></div>
 
         <div id="questions-container" class="w-full space-y-6"></div>
 
@@ -145,13 +142,13 @@
     <!-- Dashboard Modal -->
     <div id="dashboard-overlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-11/12 max-w-2xl relative">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Dashboard de Desempenho</h2>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Dashboard</h2>
             <div id="dashboard-content" class="space-y-4 text-gray-700 dark:text-gray-300">
                 <div id="overall-accuracy" class="text-lg font-semibold"></div>
                 <div id="subject-performance" class="space-y-2"></div>
             </div>
             <div class="mt-6 flex justify-end space-x-4">
-                <button id="reset-dashboard-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Resetar Dados</button>
+                <button id="reset-dashboard-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Resetar</button>
                 <button id="close-dashboard-btn" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400">Fechar</button>
             </div>
         </div>
@@ -164,10 +161,8 @@
             const generateBtn = document.getElementById('generate-btn');
             const questionsContainer = document.getElementById('questions-container');
             const loadingIndicator = document.getElementById('loading');
-            const errorMessage = document.getElementById('error-message');
-            const successMessage = document.getElementById('success-message');
+            const statusBox = document.getElementById('status-box');
             const subjectError = document.getElementById('subject-error');
-            const clearSubjectBtn = document.getElementById('clear-subject-btn');
             const openDashboardBtn = document.getElementById('open-dashboard-btn');
             const dashboardOverlay = document.getElementById('dashboard-overlay');
             const closeDashboardBtn = document.getElementById('close-dashboard-btn');
@@ -175,9 +170,9 @@
             const overallAccuracyDisplay = document.getElementById('overall-accuracy');
             const subjectPerformanceDisplay = document.getElementById('subject-performance');
 
-            const apiKey = ""; 
+            // Chave de API inserida conforme solicitado
+            const apiKey = "AIzaSyBkPMKVAI_Jh-ZJ6h4AEUuP9W990ItqLxk"; 
             const modelName = "gemini-2.5-flash-preview-09-2025";
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
             let performanceData = JSON.parse(localStorage.getItem('quizPerformance')) || {};
 
@@ -193,32 +188,8 @@
                     skeletonCard.innerHTML = `
                         <div class="skeleton-loader skeleton-text-lg w-3/4 mb-4"></div>
                         <div class="skeleton-loader skeleton-text w-full mb-2"></div>
-                        <div class="skeleton-loader skeleton-text w-1/2 mb-4"></div>
                     `;
                     questionsContainer.appendChild(skeletonCard);
-                }
-            }
-
-            async function callGeminiAPI(payload, retries = 5, delay = 1000) {
-                for (let i = 0; i < retries; i++) {
-                    try {
-                        const response = await fetch(API_URL, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        
-                        if (!response.ok) {
-                            const errorJson = await response.json();
-                            throw new Error(errorJson?.error?.message || `Status: ${response.status}`);
-                        }
-                        
-                        return await response.json();
-                    } catch (error) {
-                        if (i === retries - 1) throw error;
-                        await new Promise(res => setTimeout(res, delay));
-                        delay *= 2;
-                    }
                 }
             }
 
@@ -232,48 +203,51 @@
                     return;
                 }
 
-                errorMessage.classList.add('hidden');
-                successMessage.classList.add('hidden');
+                statusBox.classList.add('hidden');
                 loadingIndicator.classList.remove('hidden');
                 generateBtn.disabled = true;
                 showSkeletonLoaders(numQuestions);
 
-                const systemPrompt = "És um professor especialista em concursos. Gera questões de Certo/Errado. Sê conciso nas resoluções para garantir velocidade.";
-                const userPrompt = `Gera ${numQuestions} questões de 'Certo/Errado' sobre ${subject}. Retorna apenas o JSON.`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
                 const payload = {
-                    contents: [{ parts: [{ text: userPrompt }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
+                    contents: [{ 
+                        parts: [{ 
+                            text: `Aja como um professor de concursos. Gere ${numQuestions} questões de Certo/Errado sobre ${subject}. 
+                            Responda EXCLUSIVAMENTE em formato JSON puro, sem markdown, seguindo esta estrutura: 
+                            [{"question": "texto", "answer": boolean, "resolution": "explicação curta"}]` 
+                        }] 
+                    }],
                     generationConfig: {
                         responseMimeType: "application/json",
-                        responseSchema: {
-                            type: "ARRAY",
-                            items: {
-                                type: "OBJECT",
-                                properties: {
-                                    "question": { "type": "STRING" },
-                                    "answer": { "type": "BOOLEAN" },
-                                    "resolution": { "type": "STRING" }
-                                },
-                                required: ["question", "answer", "resolution"]
-                            }
-                        }
+                        temperature: 0.2
                     }
                 };
 
                 try {
-                    const result = await callGeminiAPI(payload);
-                    const questionsText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
                     
-                    if (!questionsText) throw new Error("Resposta vazia do servidor.");
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(result?.error?.message || "Erro na conexão.");
+                    }
+
+                    const questionsText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (!questionsText) throw new Error("O Gemini não retornou dados.");
                     
                     const questions = JSON.parse(questionsText);
                     questionsContainer.innerHTML = '';
                     displayQuestions(questions);
-                    showSuccess(`Simulado de ${subject} pronto!`);
+                    showStatus("Sucesso! Questões geradas.", "text-green-600");
+
                 } catch (error) {
                     console.error("API Error:", error);
-                    showError("Lentidão ou falha na rede. Por favor, tenta novamente em instantes.");
+                    showStatus("Erro ao gerar questões. Verifique sua chave ou conexão.", "text-red-500");
                     questionsContainer.innerHTML = '';
                 } finally {
                     loadingIndicator.classList.add('hidden');
@@ -299,9 +273,9 @@
                             </label>
                         </div>
                         <div class="mt-4 hidden result-msg font-bold"></div>
-                        <div class="mt-4 hidden resolution-box p-4 bg-white dark:bg-gray-700 rounded border-l-4 border-indigo-500">
-                            <p class="text-sm font-bold mb-1">Resolução:</p>
-                            <p class="text-sm text-gray-700 dark:text-gray-200">${q.resolution}</p>
+                        <div class="mt-4 hidden resolution-box p-4 bg-white dark:bg-gray-700 rounded border-l-4 border-indigo-500 text-sm">
+                            <p class="font-bold">Resolução:</p>
+                            <p>${q.resolution}</p>
                         </div>
                     `;
                     questionsContainer.appendChild(card);
@@ -310,7 +284,7 @@
 
                 const btn = document.createElement('button');
                 btn.className = 'w-full mt-6 px-6 py-4 bg-green-600 text-white font-bold rounded-lg shadow-lg hover:bg-green-700 transition transform hover:scale-105';
-                btn.textContent = 'Finalizar Simulado';
+                btn.textContent = 'Verificar Respostas';
                 btn.onclick = () => checkAnswers(questions);
                 questionsContainer.appendChild(btn);
             }
@@ -318,11 +292,11 @@
             function checkAnswers(originalQuestions) {
                 const cards = questionsContainer.querySelectorAll('.bg-gray-100');
                 let correctCount = 0;
-                let answeredAll = true;
+                let allAnswered = true;
 
                 cards.forEach((card, i) => {
                     const selected = card.querySelector('input:checked');
-                    if (!selected) { answeredAll = false; return; }
+                    if (!selected) { allAnswered = false; return; }
 
                     const isCorrect = selected.value === card.dataset.answer;
                     const msg = card.querySelector('.result-msg');
@@ -334,15 +308,15 @@
                     if (isCorrect) {
                         correctCount++;
                         msg.textContent = "✓ Correto!";
-                        msg.className = "mt-4 result-msg font-bold text-green-600";
+                        msg.className = "mt-4 result-msg text-green-600";
                     } else {
                         msg.textContent = "✗ Incorreto";
-                        msg.className = "mt-4 result-msg font-bold text-red-500";
+                        msg.className = "mt-4 result-msg text-red-500";
                     }
                 });
 
-                if (!answeredAll) {
-                    showError("Responde a todas as questões primeiro.");
+                if (!allAnswered) {
+                    alert("Responda todas as questões antes de verificar.");
                     return;
                 }
 
@@ -352,12 +326,11 @@
                 performanceData[subject].correct += correctCount;
                 savePerformanceData();
 
-                showSuccess(`Resultado: ${correctCount}/${originalQuestions.length}`);
+                showStatus(`Resultado: ${correctCount}/${originalQuestions.length}`, "text-indigo-600");
                 renderDashboard();
                 
                 const btn = questionsContainer.querySelector('button');
                 btn.textContent = "Novo Simulado";
-                btn.className = 'w-full mt-6 px-6 py-4 bg-indigo-600 text-white font-bold rounded-lg shadow-lg hover:bg-indigo-700 transition transform hover:scale-105';
                 btn.onclick = () => generateQuestions();
             }
 
@@ -372,30 +345,24 @@
 
                     const div = document.createElement('div');
                     div.className = 'p-3 bg-gray-100 dark:bg-gray-700 rounded-lg flex justify-between items-center';
-                    div.innerHTML = `<div><span class="font-bold">${subj}</span><br><small>${d.correct}/${d.total} acertos</small></div><span class="text-indigo-500 font-bold">${acc}%</span>`;
+                    div.innerHTML = `<div><span class="font-bold">${subj}</span><br><small>${d.correct}/${d.total}</small></div><span class="font-bold">${acc}%</span>`;
                     subjectPerformanceDisplay.appendChild(div);
                 }
 
                 const totalAcc = tQ > 0 ? ((tC / tQ) * 100).toFixed(1) : 0;
-                overallAccuracyDisplay.innerHTML = `Desempenho Geral: <span class="text-indigo-600">${totalAcc}%</span>`;
+                overallAccuracyDisplay.innerHTML = `Média: ${totalAcc}% (${tC}/${tQ})`;
             }
 
-            function showError(m) {
-                errorMessage.textContent = m;
-                errorMessage.classList.remove('hidden');
-            }
-
-            function showSuccess(m) {
-                successMessage.textContent = m;
-                successMessage.classList.remove('hidden');
-                setTimeout(() => successMessage.classList.add('hidden'), 4000);
+            function showStatus(msg, colorClass) {
+                statusBox.textContent = msg;
+                statusBox.className = `w-full mb-6 font-medium ${colorClass}`;
+                statusBox.classList.remove('hidden');
             }
 
             generateBtn.addEventListener('click', generateQuestions);
-            clearSubjectBtn.addEventListener('click', () => { subjectSelect.value = ""; errorMessage.classList.add('hidden'); });
             openDashboardBtn.addEventListener('click', () => { renderDashboard(); dashboardOverlay.classList.remove('hidden'); });
             closeDashboardBtn.addEventListener('click', () => dashboardOverlay.classList.add('hidden'));
-            resetDashboardBtn.addEventListener('click', () => { if(confirm("Apagar histórico de desempenho?")) { performanceData = {}; savePerformanceData(); renderDashboard(); }});
+            resetDashboardBtn.addEventListener('click', () => { if(confirm("Limpar histórico?")) { performanceData = {}; savePerformanceData(); renderDashboard(); }});
             
             renderDashboard();
         });
