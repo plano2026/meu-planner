@@ -130,7 +130,7 @@
 
         <div id="loading" class="hidden text-center text-gray-500 mb-6">
             <div class="animate-spin rounded-full h-8 w-8 border-4 border-t-indigo-500 border-gray-200 mx-auto mb-2"></div>
-            <span>Gerando questões...</span>
+            <span>A ligar ao servidor...</span>
         </div>
         <div id="success-message" class="hidden text-center text-green-600 font-medium mb-6"></div>
         <div id="error-message" class="hidden text-center text-red-500 font-medium mb-6"></div>
@@ -175,7 +175,7 @@
             const overallAccuracyDisplay = document.getElementById('overall-accuracy');
             const subjectPerformanceDisplay = document.getElementById('subject-performance');
 
-            const apiKey = ""; // A chave será providenciada pelo ambiente
+            const apiKey = ""; 
             const modelName = "gemini-2.5-flash-preview-09-2025";
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
@@ -207,7 +207,12 @@
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(payload)
                         });
-                        if (!response.ok) throw new Error(`Status: ${response.status}`);
+                        
+                        if (!response.ok) {
+                            const errorJson = await response.json();
+                            throw new Error(errorJson?.error?.message || `Status: ${response.status}`);
+                        }
+                        
                         return await response.json();
                     } catch (error) {
                         if (i === retries - 1) throw error;
@@ -233,8 +238,8 @@
                 generateBtn.disabled = true;
                 showSkeletonLoaders(numQuestions);
 
-                const systemPrompt = "És um professor especialista em concursos públicos. Gera questões objetivas de Certo/Errado com explicações detalhadas.";
-                const userPrompt = `Gera ${numQuestions} questões de 'Certo/Errado' sobre ${subject} para um concurso público de alto nível. Retorna um array de objetos JSON.`;
+                const systemPrompt = "És um professor especialista em concursos. Gera questões de Certo/Errado. Sê conciso nas resoluções para garantir velocidade.";
+                const userPrompt = `Gera ${numQuestions} questões de 'Certo/Errado' sobre ${subject}. Retorna apenas o JSON.`;
 
                 const payload = {
                     contents: [{ parts: [{ text: userPrompt }] }],
@@ -258,13 +263,17 @@
 
                 try {
                     const result = await callGeminiAPI(payload);
-                    const questions = JSON.parse(result.candidates[0].content.parts[0].text);
+                    const questionsText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    
+                    if (!questionsText) throw new Error("Resposta vazia do servidor.");
+                    
+                    const questions = JSON.parse(questionsText);
                     questionsContainer.innerHTML = '';
                     displayQuestions(questions);
-                    showSuccess(`Geradas ${questions.length} questões!`);
+                    showSuccess(`Simulado de ${subject} pronto!`);
                 } catch (error) {
-                    console.error(error);
-                    showError("Falha ao gerar questões. Verifique a sua ligação ou tente mais tarde.");
+                    console.error("API Error:", error);
+                    showError("Lentidão ou falha na rede. Por favor, tenta novamente em instantes.");
                     questionsContainer.innerHTML = '';
                 } finally {
                     loadingIndicator.classList.add('hidden');
@@ -280,11 +289,11 @@
                     card.innerHTML = `
                         <p class="font-medium text-lg mb-4 text-gray-800 dark:text-gray-100">${index + 1}. ${q.question}</p>
                         <div class="space-y-2">
-                            <label class="flex items-center cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition">
+                            <label class="flex items-center cursor-pointer p-3 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition">
                                 <input type="radio" class="w-5 h-5 text-indigo-600" name="q-${index}" value="true">
                                 <span class="ml-3 dark:text-gray-300">Certo</span>
                             </label>
-                            <label class="flex items-center cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition">
+                            <label class="flex items-center cursor-pointer p-3 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition">
                                 <input type="radio" class="w-5 h-5 text-indigo-600" name="q-${index}" value="false">
                                 <span class="ml-3 dark:text-gray-300">Errado</span>
                             </label>
@@ -333,23 +342,21 @@
                 });
 
                 if (!answeredAll) {
-                    showError("Responda a todas as questões antes de finalizar.");
+                    showError("Responde a todas as questões primeiro.");
                     return;
                 }
 
-                // Update Performance
                 const subject = subjectSelect.value;
                 if (!performanceData[subject]) performanceData[subject] = { total: 0, correct: 0 };
                 performanceData[subject].total += originalQuestions.length;
                 performanceData[subject].correct += correctCount;
                 savePerformanceData();
 
-                showSuccess(`Simulado concluído! Acertou ${correctCount} de ${originalQuestions.length}.`);
+                showSuccess(`Resultado: ${correctCount}/${originalQuestions.length}`);
                 renderDashboard();
                 
-                // Switch button to "New Quiz"
                 const btn = questionsContainer.querySelector('button');
-                btn.textContent = "Gerar Novo Simulado";
+                btn.textContent = "Novo Simulado";
                 btn.className = 'w-full mt-6 px-6 py-4 bg-indigo-600 text-white font-bold rounded-lg shadow-lg hover:bg-indigo-700 transition transform hover:scale-105';
                 btn.onclick = () => generateQuestions();
             }
@@ -360,7 +367,7 @@
 
                 for (const subj in performanceData) {
                     const d = performanceData[subj];
-                    const acc = ((d.correct / d.total) * 100).toFixed(1);
+                    const acc = d.total > 0 ? ((d.correct / d.total) * 100).toFixed(1) : 0;
                     tQ += d.total; tC += d.correct;
 
                     const div = document.createElement('div');
@@ -370,7 +377,7 @@
                 }
 
                 const totalAcc = tQ > 0 ? ((tC / tQ) * 100).toFixed(1) : 0;
-                overallAccuracyDisplay.innerHTML = `Média Geral: <span class="text-indigo-600">${totalAcc}%</span> (${tC}/${tQ})`;
+                overallAccuracyDisplay.innerHTML = `Desempenho Geral: <span class="text-indigo-600">${totalAcc}%</span>`;
             }
 
             function showError(m) {
@@ -388,7 +395,7 @@
             clearSubjectBtn.addEventListener('click', () => { subjectSelect.value = ""; errorMessage.classList.add('hidden'); });
             openDashboardBtn.addEventListener('click', () => { renderDashboard(); dashboardOverlay.classList.remove('hidden'); });
             closeDashboardBtn.addEventListener('click', () => dashboardOverlay.classList.add('hidden'));
-            resetDashboardBtn.addEventListener('click', () => { if(confirm("Apagar histórico?")) { performanceData = {}; savePerformanceData(); renderDashboard(); }});
+            resetDashboardBtn.addEventListener('click', () => { if(confirm("Apagar histórico de desempenho?")) { performanceData = {}; savePerformanceData(); renderDashboard(); }});
             
             renderDashboard();
         });
